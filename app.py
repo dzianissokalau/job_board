@@ -1,13 +1,18 @@
 from flask import Flask, render_template, request, make_response, redirect, send_from_directory
 from datetime import datetime, timedelta
+import json
 
 
 app = Flask(__name__, static_folder='static')
 
 
+with open('json_data.json') as json_file:
+    data = json.load(json_file)
+
+
 @app.route('/', methods=['GET', 'POST'])
-def index():
-    return render_template('index.html')
+def index(data=data):
+    return render_template('index.html', data=data)
 
 
 @app.route('/robots.txt')

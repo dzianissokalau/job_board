@@ -1,45 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
     <section class="p-3">
-        <div class="container text-center"  style="max-width:900px; margin-left: auto; margin-right: auto;">
-            <a class="btn btn-outline-primary btn-sm" href="#">Software development</a>
-            <a class="btn btn-outline-primary btn-sm" href="#">Machine learning</a>
-            <a class="btn btn-outline-primary btn-sm" href="#">Dev ops</a>
-            <a class="btn btn-outline-primary btn-sm" href="#">Data science</a>
-        </div>
-    </section>
-    <section class="p-3">
         <div class="list-group w-auto gap-2" style="max-width:900px; margin-left: auto; margin-right: auto;">
+            {% for record in data %}
             <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3 rounded-3" style="border-width: 1px;" aria-current="true">
                 <img src="https://github.com/twbs.png" alt="twbs" class="rounded-circle flex-shrink-0" width="32" height="32">
                 <div class="d-flex gap-2 w-100 justify-content-between">
-                  <div>
-                    <h6 class="mb-0">Software Engineer</h6>
-                    <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-                  </div>
-                  <small class="opacity-50 text-nowrap">USA</small>
+                    <div>
+                        <h6 class="mb-0">{{ record['job_name'] }}</h6>  
+                        <p class="mb-0 opacity-75">{{ record['company'] }}</p>
+                        <p class="mb-0"><span class="badge text-bg-secondary">{{ record['location'] }}</span></p>
+                    </div>
                 </div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3 rounded-3" style="border-width: 1px;" aria-current="true">
-                <img src="https://github.com/twbs.png" alt="twbs" class="rounded-circle flex-shrink-0" width="32" height="32">
-                <div class="d-flex gap-2 w-100 justify-content-between">
-                  <div>
-                    <h6 class="mb-0">Software Engineer</h6>
-                    <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-                  </div>
-                  <small class="opacity-50 text-nowrap">USA</small>
-                </div>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3 rounded-3" style="border-width: 1px;" aria-current="true">
-                <img src="https://github.com/twbs.png" alt="twbs" class="rounded-circle flex-shrink-0" width="32" height="32">
-                <div class="d-flex gap-2 w-100 justify-content-between">
-                  <div>
-                    <h6 class="mb-0">Software Engineer</h6>
-                    <p class="mb-0 opacity-75">Some placeholder content in a paragraph.</p>
-                  </div>
-                  <small class="opacity-50 text-nowrap">USA</small>
-                </div>
-              </a>
+                <small class="opacity-50 text-nowrap">1d</small>
+            </a>
+            {% endfor %}
         </div>   
     </section>
 {% endblock %}
