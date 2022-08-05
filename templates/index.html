@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
     <section class="p-3">
+        <div style="max-width:900px; margin-left: auto; margin-right: auto;">
+            <a class="badge rounded-pill text-bg-light" href="#" style="text-decoration:none;">Software Engineer</a>
+            <a class="badge rounded-pill text-bg-light" href="#" style="text-decoration:none;">Product Manager</a>
+            <a class="badge rounded-pill text-bg-light" href="#" style="text-decoration:none;">Data Scientist</a>
+            <a class="badge rounded-pill text-bg-light" href="#" style="text-decoration:none;">Designer</a>
+            <a class="badge rounded-pill text-bg-light" href="#" style="text-decoration:none;">Engineering Manage</a>
+        </div>
+    </section>
+    <section class="p-3">
         <div class="list-group w-auto gap-2" style="max-width:900px; margin-left: auto; margin-right: auto;">
             {% for record in data %}
             <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3 rounded-3" style="border-width: 1px;" aria-current="true">
