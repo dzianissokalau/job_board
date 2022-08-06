@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- Company info -->
+    <section class="p-3">
+        <div style="max-width:800px; margin-left: auto; margin-right: auto;">
+            <div class="d-flex gap-2 w-100 justify-content-between p-3">
+                <img src="{{ url_for('static', filename=job_data['img_url']) }}" alt="{{ company_name }}" class="flex-shrink-0" width="48" height="48"> 
+                <div>
+                    <a href="{{ job_data['job_url'] }}" target="_blank" type="button" class="btn btn-outline-success">Apply Now</a>
+                </div>
+            </div>
+        </div>   
+    </section>
+    <!-- Job post title -->
+    <section class="p-3">
+        <div style="max-width:800px; margin-left: auto; margin-right: auto; font-size: small;">
+            <h3>{{ job_data['job_name'] }}</h3>
+            <h6>at {{ company_name }}</h6>
+            <h6 class="opacity-50 text-nowrap">{{ job_data['location'] }}</h6>
+            <p class="opacity-75" style="line-height: 2">
+                {% for tag in job_data['tags'] %}
+                <span class="badge rounded-pill text-bg-success" style="font-size: small;">{{ tag }}</span>
+                {% endfor %}
+            </p>
+        </div>   
+    </section>
+    <!-- Job post content -->
+    <section class="p-3">
+        <div style="max-width:800px; margin-left: auto; margin-right: auto; font-size: small;">
+            {{ job_data['job_description'] | safe }}
+        </div>   
+    </section>
+{% endblock %}
