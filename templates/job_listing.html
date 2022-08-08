@@ -4,7 +4,7 @@
     <section class="p-3">
         <div style="max-width:800px; margin-left: auto; margin-right: auto;">
             <div class="d-flex gap-2 w-100 justify-content-between p-3">
-                <img src="{{ url_for('static', filename=job_data['img_url']) }}" alt="{{ company_name }}" class="flex-shrink-0" width="62" height="62"> 
+                <img src="{{ job_data['img_url'] }}" alt="{{ company_name }}" class="flex-shrink-0" width="62" height="62"> 
                 <div>
                     <a href="{{ job_data['job_url'] }}" target="_blank"><button type="button" class="btn btn-primary">Apply Now</button></a>
                 </div>
