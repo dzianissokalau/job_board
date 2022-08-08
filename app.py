@@ -35,6 +35,12 @@ def filtered_listings(job_title, job_listings=job_listings):
     return render_template('index.html', job_title=job_title, job_listings=job_listings_filtered)
 
 
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/<company_name>/jobs/<job_id>', methods=['GET', 'POST'])
 def job_listing(company_name, job_id):
     job_data = job_content[company_name][job_id]
