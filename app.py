@@ -15,12 +15,15 @@ with open('json_content.json') as json_file:
 
 
 @app.route('/', methods=['GET', 'POST'])
-def index(job_listings=job_listings):
-    return render_template('index.html', job_title='All', job_listings=job_listings)
+def index(job_listings=job_listings[0:20]):
+    previous_page = False
+    next_page = '2'
+
+    return render_template('index.html', job_title='All', job_listings=job_listings, previous_page=previous_page, next_page=next_page)
 
 
-@app.route('/<job_title>', methods=['GET', 'POST'])
-def filtered_listings(job_title, job_listings=job_listings):
+@app.route('/<job_title>/<page>', methods=['GET', 'POST'])
+def filtered_listings(job_title, page, job_listings=job_listings):
     job_titles = {
         'Software-Engineer': 'swe',
         'Product-Manager': 'pm',
@@ -30,9 +33,31 @@ def filtered_listings(job_title, job_listings=job_listings):
         'Engineering-Manager': 'em'
     }
 
-    job_listings_filtered = [job for job in job_listings if job[job_titles[job_title]]]
+    # check if all or specific title is selected
+    if job_title == 'All':
+        job_listings_filtered = job_listings
+    else:
+        job_listings_filtered = [job for job in job_listings if job[job_titles[job_title]]]
+    
+    # pagination
+    page_int = int(page)
+    if page_int == 1:
+        previous_page = False
+    else:
+        previous_page = str(page_int - 1)
 
-    return render_template('index.html', job_title=job_title, job_listings=job_listings_filtered)
+    start = (page_int - 1) * 20
+    # if there are less elements in the list
+    if len(job_listings_filtered) - 1 <= page_int * 20 - 1:
+        stop = len(job_listings_filtered) - 1
+        next_page = False
+    else:
+        stop =  page_int * 20 - 1
+        next_page = str(page_int + 1)
+    
+    job_listings_filtered = job_listings_filtered[start:stop]
+
+    return render_template('index.html', job_title=job_title, job_listings=job_listings_filtered, previous_page=previous_page, next_page=next_page)
 
 
 
