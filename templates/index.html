@@ -4,45 +4,45 @@
         <div style="max-width:900px; margin-left: auto; margin-right: auto;">
             <!-- All jobs -->
             {% if job_title=='All' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('index') }}" style="text-decoration:none;">All</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='All', page='1') }}" style="text-decoration:none;">All</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('index') }}" style="text-decoration:none;">All</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='All', page='1') }}" style="text-decoration:none;">All</a>
             {% endif %}
             <!-- Software Engineer jobs-->
             {% if job_title=='Software-Engineer' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Software-Engineer') }}" style="text-decoration:none;">Software Engineer</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Software-Engineer', page='1') }}" style="text-decoration:none;">Software Engineer</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Software-Engineer') }}" style="text-decoration:none;">Software Engineer</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Software-Engineer', page='1') }}" style="text-decoration:none;">Software Engineer</a>
             {% endif %}
             <!-- Product Manager jobs-->
             {% if job_title=='Product-Manager' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Product-Manager') }}" style="text-decoration:none;">Product Manager</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Product-Manager', page='1') }}" style="text-decoration:none;">Product Manager</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Product-Manager') }}" style="text-decoration:none;">Product Manager</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Product-Manager', page='1') }}" style="text-decoration:none;">Product Manager</a>
             {% endif %}
             <!-- Data Scientist jobs-->
             {% if job_title=='Data-Scientist' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Data-Scientist') }}" style="text-decoration:none;">Data Scientist</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Data-Scientist', page='1') }}" style="text-decoration:none;">Data Scientist</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Data-Scientist') }}" style="text-decoration:none;">Data Scientist</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Data-Scientist', page='1') }}" style="text-decoration:none;">Data Scientist</a>
             {% endif %}
             <!-- Data Engineer jobs-->
             {% if job_title=='Data-Engineer' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Data-Engineer') }}" style="text-decoration:none;">Data Engineer</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Data-Engineer', page='1') }}" style="text-decoration:none;">Data Engineer</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Data-Engineer') }}" style="text-decoration:none;">Data Engineer</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Data-Engineer', page='1') }}" style="text-decoration:none;">Data Engineer</a>
             {% endif %}
             <!-- Designer jobs-->
             {% if job_title=='Designer' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Designer') }}" style="text-decoration:none;">Designer</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Designer', page='1') }}" style="text-decoration:none;">Designer</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Designer') }}" style="text-decoration:none;">Designer</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Designer', page='1') }}" style="text-decoration:none;">Designer</a>
             {% endif %}
             <!-- Engineering-Manager jobs-->
             {% if job_title=='Engineering-Manager' %}
-            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Engineering-Manager') }}" style="text-decoration:none;">Engineering Manager</a>
+            <a class="badge rounded-pill text-bg-primary" href="{{ url_for('filtered_listings', job_title='Engineering-Manager', page='1') }}" style="text-decoration:none;">Engineering Manager</a>
             {% else %}
-            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Engineering-Manager') }}" style="text-decoration:none;">Engineering Manager</a>
+            <a class="badge rounded-pill text-bg-light" href="{{ url_for('filtered_listings', job_title='Engineering-Manager', page='1') }}" style="text-decoration:none;">Engineering Manager</a>
             {% endif %}
         </div>
     </section>
@@ -77,5 +77,32 @@
             </a>
             {% endfor %}
         </div>   
+    </section>
+    <!-- Pagination -->
+    <section class="p-3">
+        <div style="max-width:900px; margin-left: auto; margin-right: auto;">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if previous_page==False %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">&laquo; back</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('filtered_listings', job_title=job_title, page=previous_page) }}">&laquo; back</a>
+                    </li>
+                    {% endif%}
+                    {% if next_page==False %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">next &raquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('filtered_listings', job_title=job_title, page=next_page) }}">next &raquo;</a>
+                    </li>
+                    {% endif%}
+                </ul>
+            </nav>
+        </div>
     </section>
 {% endblock %}
