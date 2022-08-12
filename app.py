@@ -2,16 +2,15 @@ from flask import Flask, render_template, request, make_response, redirect, send
 from datetime import datetime, timedelta
 import json
 
+import data
+
+
 
 app = Flask(__name__, static_folder='static')
 
 
-with open('json_listings.json') as json_file:
-    job_listings = json.load(json_file)
-
-
-with open('json_content.json') as json_file:
-    job_content = json.load(json_file)
+db = data.init_db()
+job_listings = data.get_listings(db)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -68,10 +67,10 @@ def about():
 
 @app.route('/<company_name>/jobs/<job_id>', methods=['GET', 'POST'])
 def job_listing(company_name, job_id):
-    job_data = job_content[company_name][job_id]
-    job_description = job_content[company_name][job_id]['job_description']
-    job_name = job_content[company_name][job_id]['job_name']
-    img_url = job_content[company_name][job_id]['img_url']
+    job_data = data.get_listing(db, job_id)
+    job_description = job_data['job_description']
+    job_name = job_data['job_name']
+    img_url = job_data['img_url']
 
     return render_template('job_listing.html', job_data=job_data, job_description=job_description, company_name=company_name, job_name=job_name, img_url=img_url)
 

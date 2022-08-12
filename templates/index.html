@@ -49,13 +49,13 @@
     <section class="p-3">
         <div class="list-group w-auto gap-2" style="max-width:900px; margin-left: auto; margin-right: auto;">
             {% for record in job_listings %}
-            <a href="{{ url_for('job_listing', company_name=record['company'], job_id=record['job_id']) }}" class="list-group-item list-group-item-action d-flex gap-3 py-3 rounded-3" style="border-width: 1px;" aria-current="true">
-                <img src="{{ record['img_url'] }}" alt="{{ record['company'] }}" class="flex-shrink-0" width="48" height="48">
+            <a href="{{ url_for('job_listing', company_name=record['company_name'], job_id=record['job_id']) }}" class="list-group-item list-group-item-action d-flex gap-3 py-3 rounded-3" style="border-width: 1px;" aria-current="true">
+                <img src="{{ record['img_url'] }}" alt="{{ record['company_name'] }}" class="flex-shrink-0" width="48" height="48">
                 <div class="d-flex gap-2 w-100 justify-content-between">
                     <div>
                         <h6 class="mb-0">{{ record['job_name'] }}</h6>  
                         <p class="mb-0 opacity-75">
-                            {{ record['company'] }} <span class="badge text-bg-secondary">{{ record['location_simp'] }}</span>
+                            {{ record['company_name'] }} <span class="badge text-bg-secondary">{{ record['location_simp'] }}</span>
                         </p>
                         <div class="d-md-none" data-target="#skills-tags-collapse">
                             <p class="mb-0 opacity-75">
