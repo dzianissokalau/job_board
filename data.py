@@ -33,8 +33,38 @@ def init_db():
 
 
 
-def get_listings(db):
-    listings = db.collection(u'listings_light').stream()
+def get_listings(db, role=None, start_after=None, end_before=None, limit=20, forwards='True'):
+
+    query_ref = db.collection(u'listings')
+
+    # if role is filtered
+    query_filtered = query_ref.where(role, '==', True) if role != None else query_ref    
+
+    # pagination
+    if forwards == 'True':
+        query_ordered = query_filtered.order_by('job_id')
+        if start_after != None:
+            query_sliced = query_ordered.start_after({'job_id': start_after})  
+        else:
+            query_sliced = query_ordered
+        
+        listings = query_sliced.limit(limit).get()
+    
+    else:
+        """
+        # it should have worked as follows but due to firestore bug it doesn't
+        # https://github.com/googleapis/python-firestore/issues/536
+        query_ordered = query_filtered.order_by('job_id')
+        query_sliced = query_ordered.end_before({'job_id': end_before})
+        listings = query_sliced.limit_to_last(limit).get()
+        listings.reverse()
+        """
+
+        query_ordered = query_filtered.order_by('job_id', direction=firestore.Query.DESCENDING)
+        query_sliced = query_ordered.start_after({'job_id': end_before})
+        listings = query_sliced.limit(limit-1).get()
+        listings.reverse()
+
 
     return [listing.to_dict() for listing in listings]
 

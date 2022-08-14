@@ -10,19 +10,32 @@ app = Flask(__name__, static_folder='static')
 
 
 db = data.init_db()
-job_listings = data.get_listings(db)
+#job_listings = data.get_listings(db)
 
 
 @app.route('/', methods=['GET', 'POST'])
-def index(job_listings=job_listings[0:20]):
+def index(page='1', limit=21):
+    job_listings = data.get_listings(db, role=None, start_after=None, limit=limit)
+
+    # pagination
     previous_page = False
-    next_page = '2'
+    start_after = request.args.get('start_after')
+    end_before = request.args.get('end_before')
+    forwards = 'True'
 
-    return render_template('index.html', job_title='All', job_listings=job_listings, previous_page=previous_page, next_page=next_page)
+    if len(job_listings) > limit - 1:
+        next_page = str(int(page) + 1)
+        job_listings = job_listings[:limit-1]
+        start_after = job_listings[-1]['job_id']
+    else:
+        next_page = False 
+
+    return render_template('index.html', job_title='All', job_listings=job_listings, start_after=start_after, end_before=end_before, previous_page=previous_page, next_page=next_page, forwards=forwards)
 
 
-@app.route('/<job_title>/<page>', methods=['GET', 'POST'])
-def filtered_listings(job_title, page, job_listings=job_listings):
+
+@app.route('/<job_title>', methods=['GET', 'POST'])
+def filtered_listings(job_title, limit=21):
     job_titles = {
         'Software-Engineer': 'swe',
         'Product-Manager': 'pm',
@@ -32,31 +45,45 @@ def filtered_listings(job_title, page, job_listings=job_listings):
         'Engineering-Manager': 'em'
     }
 
+    start_after = request.args.get('start_after')
+    end_before = request.args.get('end_before')
+    forwards = request.args.get('forwards')
+    page = request.args.get('page')
+
     # check if all or specific title is selected
     if job_title == 'All':
-        job_listings_filtered = job_listings
+        job_listings = data.get_listings(db, role=None, start_after=start_after, end_before=end_before, forwards=forwards, limit=21) 
     else:
-        job_listings_filtered = [job for job in job_listings if job[job_titles[job_title]]]
-    
-    # pagination
-    page_int = int(page)
-    if page_int == 1:
+        job_listings = data.get_listings(db, role=job_titles[job_title], start_after=start_after, end_before=end_before, forwards=forwards, limit=21) 
+
+
+    with open('track0.txt', 'w') as f:
+        f.write(f'len: {len(job_listings)}, forwards: {forwards} type: {type(forwards)}, end_before: {end_before}, start_after: {start_after}')
+
+
+    # previous page
+    if int(page) > 1:
+        previous_page = str(int(page) - 1)
+    else:
         previous_page = False
-    else:
-        previous_page = str(page_int - 1)
-
-    start = (page_int - 1) * 20
-    # if there are less elements in the list
-    if len(job_listings_filtered) - 1 <= page_int * 20 - 1:
-        stop = len(job_listings_filtered) - 1
-        next_page = False
-    else:
-        stop =  page_int * 20 - 1
-        next_page = str(page_int + 1)
     
-    job_listings_filtered = job_listings_filtered[start:stop]
+    # next page
+    if forwards == 'True' and len(job_listings) == limit:
+        next_page = str(int(page) + 1)
+    elif forwards == 'False':
+        next_page = str(int(page) + 1)
+    else:
+        next_page = False
 
-    return render_template('index.html', job_title=job_title, job_listings=job_listings_filtered, previous_page=previous_page, next_page=next_page)
+    # trimming listings if they are longer than 20
+    if forwards == 'True' and len(job_listings) == limit:
+        job_listings = job_listings[:limit-1]
+               
+    with open('track.txt', 'w') as f:
+        f.write(f'len: {len(job_listings)}, forwards: {forwards} type: {type(forwards)}, end_before: {end_before}, previous_page: {previous_page}, start_after: {start_after}, next_page: {next_page}')
+
+    
+    return render_template('index.html', job_title=job_title, job_listings=job_listings, start_after=start_after, end_before=end_before, previous_page=previous_page, next_page=next_page)
 
 
 
