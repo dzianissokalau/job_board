@@ -35,7 +35,7 @@ def init_db():
 
 def get_listings(db, role=None, start_after=None, end_before=None, limit=20, forwards='True'):
 
-    query_ref = db.collection(u'listings')
+    query_ref = db.collection(u'listings').where('status', '==', 'active')
 
     # if role is filtered
     query_filtered = query_ref.where(role, '==', True) if role != None else query_ref    
