@@ -26,7 +26,7 @@ def index(page='1', limit=21):
     if len(job_listings) > limit - 1:
         next_page = str(int(page) + 1)
         job_listings = job_listings[:limit-1]
-        start_after = job_listings[-1]['job_id']
+        start_after = job_listings[-1]['datetime']
     else:
         next_page = False 
 
@@ -57,9 +57,6 @@ def filtered_listings(job_title, limit=21):
         job_listings = data.get_listings(db, role=job_titles[job_title], start_after=start_after, end_before=end_before, forwards=forwards, limit=21) 
 
 
-    with open('track0.txt', 'w') as f:
-        f.write(f'len: {len(job_listings)}, forwards: {forwards} type: {type(forwards)}, end_before: {end_before}, start_after: {start_after}')
-
 
     # previous page
     if int(page) > 1:
@@ -78,9 +75,6 @@ def filtered_listings(job_title, limit=21):
     # trimming listings if they are longer than 20
     if forwards == 'True' and len(job_listings) == limit:
         job_listings = job_listings[:limit-1]
-               
-    with open('track.txt', 'w') as f:
-        f.write(f'len: {len(job_listings)}, forwards: {forwards} type: {type(forwards)}, end_before: {end_before}, previous_page: {previous_page}, start_after: {start_after}, next_page: {next_page}')
 
     
     return render_template('index.html', job_title=job_title, job_listings=job_listings, start_after=start_after, end_before=end_before, previous_page=previous_page, next_page=next_page)
