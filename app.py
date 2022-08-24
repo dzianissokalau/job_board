@@ -26,7 +26,7 @@ def index(page='1', limit=21):
     if len(job_listings) > limit - 1:
         next_page = str(int(page) + 1)
         job_listings = job_listings[:limit-1]
-        start_after = job_listings[-1]['datetime']
+        start_after = job_listings[-1]['job_id']
     else:
         next_page = False 
 
@@ -58,15 +58,20 @@ def filtered_listings(job_title, limit=21):
 
 
 
+    start_after = job_listings[-1]['job_id']
+    end_before = job_listings[0]['job_id']
+
     # previous page
     if int(page) > 1:
         previous_page = str(int(page) - 1)
+        #end_before = job_listings[0]['job_id']
     else:
         previous_page = False
     
     # next page
     if forwards == 'True' and len(job_listings) == limit:
         next_page = str(int(page) + 1)
+        #start_after = job_listings[-1]['job_id']
     elif forwards == 'False':
         next_page = str(int(page) + 1)
     else:
