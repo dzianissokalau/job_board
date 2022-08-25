@@ -47,8 +47,9 @@ def filtered_listings(job_title, limit=21):
 
     start_after = request.args.get('start_after')
     end_before = request.args.get('end_before')
-    forwards = request.args.get('forwards')
-    page = request.args.get('page')
+    forwards = request.args.get('forwards') or 'True'
+    page = request.args.get('page') or 1
+
 
     # check if all or specific title is selected
     if job_title == 'All':
@@ -57,21 +58,18 @@ def filtered_listings(job_title, limit=21):
         job_listings = data.get_listings(db, role=job_titles[job_title], start_after=start_after, end_before=end_before, forwards=forwards, limit=21) 
 
 
-
     start_after = job_listings[-1]['job_id']
     end_before = job_listings[0]['job_id']
 
     # previous page
     if int(page) > 1:
         previous_page = str(int(page) - 1)
-        #end_before = job_listings[0]['job_id']
     else:
         previous_page = False
     
     # next page
     if forwards == 'True' and len(job_listings) == limit:
         next_page = str(int(page) + 1)
-        #start_after = job_listings[-1]['job_id']
     elif forwards == 'False':
         next_page = str(int(page) + 1)
     else:
@@ -99,6 +97,18 @@ def job_listing(company_name, job_id):
     img_url = job_data['img_url']
 
     return render_template('job_listing.html', job_data=job_data, job_description=job_description, company_name=company_name, job_name=job_name, img_url=img_url)
+
+
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():    
+    sitemap_xml = render_template('sitemap.xml')
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = 'application/xml'  
+
+    return response
+
+
 
 
 @app.route('/robots.txt')
