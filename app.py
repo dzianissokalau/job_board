@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, make_response, redirect, send_from_directory
 from datetime import datetime, timedelta
+import time
 import json
 
 import data
@@ -10,7 +11,7 @@ app = Flask(__name__, static_folder='static')
 
 
 db = data.init_db()
-#job_listings = data.get_listings(db)
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -26,7 +27,7 @@ def index(page='1', limit=21):
     if len(job_listings) > limit - 1:
         next_page = str(int(page) + 1)
         job_listings = job_listings[:limit-1]
-        start_after = job_listings[-1]['job_id']
+        start_after = job_listings[-1]['unix_timestamp']
     else:
         next_page = False 
 
@@ -57,9 +58,9 @@ def filtered_listings(job_title, limit=21):
     else:
         job_listings = data.get_listings(db, role=job_titles[job_title], start_after=start_after, end_before=end_before, forwards=forwards, limit=21) 
 
-
-    start_after = job_listings[-1]['job_id']
-    end_before = job_listings[0]['job_id']
+    print(len(job_listings))
+    start_after = job_listings[-1]['unix_timestamp']
+    end_before = job_listings[0]['unix_timestamp']
 
     # previous page
     if int(page) > 1:
@@ -79,7 +80,6 @@ def filtered_listings(job_title, limit=21):
     if forwards == 'True' and len(job_listings) == limit:
         job_listings = job_listings[:limit-1]
 
-    
     return render_template('index.html', job_title=job_title, job_listings=job_listings, start_after=start_after, end_before=end_before, previous_page=previous_page, next_page=next_page)
 
 
