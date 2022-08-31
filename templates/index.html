@@ -73,7 +73,7 @@
                         </p>
                     </div>
                 </div>
-                <small class="opacity-50 text-nowrap">1d</small>
+                <small class="opacity-50 text-nowrap">{{ record['age'] }}</small>
             </a>
             {% endfor %}
         </div>   
@@ -89,7 +89,7 @@
                     </li>
                     {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('filtered_listings', job_title=job_title, page=previous_page, end_before=job_listings[0]['job_id'], forwards=False) }}">&laquo; back</a>
+                        <a class="page-link" href="{{ url_for('filtered_listings', job_title=job_title, page=previous_page, end_before=job_listings[0]['unix_timestamp'], forwards=False) }}">&laquo; back</a>
                     </li>
                     {% endif%}
                     {% if next_page==False %}
@@ -98,7 +98,7 @@
                     </li>
                     {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('filtered_listings', job_title=job_title, page=next_page, start_after=job_listings[-1]['job_id'], forwards=True) }}">next &raquo;</a>
+                        <a class="page-link" href="{{ url_for('filtered_listings', job_title=job_title, page=next_page, start_after=job_listings[-1]['unix_timestamp'], forwards=True) }}">next &raquo;</a>
                     </li>
                     {% endif%}
                 </ul>
