@@ -46,6 +46,13 @@
             {% endif %}
         </div>
     </section>
+    {% if job_title!='All' %}
+    <section class="p-3">
+        <div style="max-width:900px; margin-left: auto; margin-right: auto;">
+            <h2>{{ job_title|replace('-', ' ') }} remote jobs</h2>
+        </div>
+    </section>
+    {% endif %}
     <section class="p-3">
         <div class="list-group w-auto gap-2" style="max-width:900px; margin-left: auto; margin-right: auto;">
             {% for record in job_listings %}

@@ -58,7 +58,6 @@ def filtered_listings(job_title, limit=21):
     else:
         job_listings = data.get_listings(db, role=job_titles[job_title], start_after=start_after, end_before=end_before, forwards=forwards, limit=21) 
 
-    print(len(job_listings))
     start_after = job_listings[-1]['unix_timestamp']
     end_before = job_listings[0]['unix_timestamp']
 
