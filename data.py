@@ -91,7 +91,6 @@ def get_listings(db, role=None, start_after=None, end_before=None, limit=20, for
     current_time = int(time.time())
     for listing in listings_formated:
         listing['age'] = time_diff(listing['unix_timestamp'], current_time)
-        print(listing['unix_timestamp'])
 
     return listings_formated
 
